@@ -41,6 +41,12 @@ extension WeatherViewModel {
     }
 }
 
+extension WeatherIcon {
+    static func random() -> WeatherIcon {
+        WeatherIcon.allCases[Int.random(in: 0...2)]
+    }
+}
+
 enum Constants {
     static let days: [String] = [
         "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"

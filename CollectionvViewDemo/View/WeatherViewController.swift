@@ -72,29 +72,3 @@ extension WeatherViewController: UICollectionViewDelegate {
         reloadData()
     }
 }
-
-enum WeatherIcon: String, CaseIterable {
-    case sunny = "☀️"
-    case cloudy = "☁️"
-    case rainy = "🌧"
-
-    static func random() -> WeatherIcon {
-        WeatherIcon.allCases[Int.random(in: 0...2)]
-    }
-}
-
-struct DailyEntry: Hashable {
-    let name: String
-    let icon: WeatherIcon
-    let minTemp: String
-    let maxTemp: String
-    let hours: [HourlyEntry]
-    let id = UUID()
-    var selected: Bool
-}
-
-struct HourlyEntry: Hashable {
-    let time: String
-    let icon: WeatherIcon
-    let temperature: String
-}

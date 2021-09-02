@@ -12,6 +12,13 @@ struct WeatherViewModel {
     let title: String
 }
 
+enum WeatherIcon: String, CaseIterable {
+    case sunny = "☀️"
+    case cloudy = "☁️"
+    case rainy = "🌧"
+}
+
+
 // MARK: - Section type
 
 extension WeatherViewModel {
@@ -45,37 +52,27 @@ extension WeatherViewModel {
     }
 
     mutating func select(dailyEntry: DailyEntry) {
+        guard let index = (sections[.daily] as? [DailyEntry])?.firstIndex(of: dailyEntry) else {
+            return
+        }
         var mutableCopy = dailyEntry
         mutableCopy.selected = true
-        update(dailyEntry: mutableCopy)
+        update(dailyEntry: mutableCopy, at: index)
         sections[.hourly] = dailyEntry.hours
     }
 
     mutating func deselect(dailyEntry: DailyEntry) {
-        var mutableCopy = dailyEntry
-        mutableCopy.selected = false
-        update(dailyEntry: mutableCopy)
-    }
-
-    private mutating func update(dailyEntry: DailyEntry) {
-        var dailyEntries = sections[.daily]
-        guard let entryIndex = indexOf(dailyEntry: dailyEntry) else {
+        guard let index = (sections[.daily] as? [DailyEntry])?.firstIndex(of: dailyEntry) else {
             return
         }
-
-        dailyEntries?.replaceSubrange(entryIndex...entryIndex, with: [dailyEntry])
-        sections[.daily] = dailyEntries
+        var mutableCopy = dailyEntry
+        mutableCopy.selected = false
+        update(dailyEntry: mutableCopy, at: index)
     }
 
-    private func indexOf(dailyEntry: DailyEntry) -> Int? {
-        guard let dailyEntries = sections[.daily] as? [DailyEntry] else {
-            return nil
-        }
-        for i in 0..<dailyEntries.count {
-            if dailyEntries[i].id == dailyEntry.id {
-                return i
-            }
-        }
-        return nil
+    private mutating func update(dailyEntry: DailyEntry, at index: Int) {
+        var dailyEntries = sections[.daily]
+        dailyEntries?.replaceSubrange(index...index, with: [dailyEntry])
+        sections[.daily] = dailyEntries
     }
 }
