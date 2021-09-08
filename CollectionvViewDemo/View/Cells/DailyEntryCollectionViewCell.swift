@@ -14,7 +14,7 @@ class DailyEntryCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var minTempLabel: UILabel!
     @IBOutlet weak var maxTempLabel: UILabel!
 
-    func configure(with viewModel: DailyEntry) {
+    func configure(with viewModel: WeatherViewModel.Day) {
         dayLabel.text = viewModel.name
         iconLabel.text = viewModel.icon.rawValue
         minTempLabel.text = viewModel.minTemp

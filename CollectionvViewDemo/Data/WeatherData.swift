@@ -15,7 +15,7 @@ enum WeatherData {
             minTemp: "\(Int.random(in: 12...18))°",
             maxTemp: "\(Int.random(in: 19...34))°",
             hours: makeRandomHourEntriesForADay(),
-            selected: $0 == 0
+            id: UUID()
         )
     })
 
@@ -27,17 +27,6 @@ enum WeatherData {
                 temperature: "\(Int.random(in: 12...34))°"
             )
         })
-    }
-}
-
-extension WeatherViewModel {
-    init(days: [DailyEntry]) {
-        self.init(sections: [
-            .daily: days,
-            .hourly: days.first!.hours
-        ],
-        title: "London"
-        )
     }
 }
 

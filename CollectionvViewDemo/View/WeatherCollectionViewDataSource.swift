@@ -8,21 +8,18 @@
 import Foundation
 import UIKit
 
-final class WeatherCollectionViewDataSource: UICollectionViewDiffableDataSource<WeatherViewModel.Section, AnyHashable> {
+final class WeatherCollectionViewDataSource: UICollectionViewDiffableDataSource<WeatherViewModel.Section, WeatherViewModel.Item> {
     init(collectionView: UICollectionView) {
-        super.init(collectionView: collectionView) { (collectionView: UICollectionView, indexPath: IndexPath, item: AnyHashable) -> UICollectionViewCell? in
+        super.init(collectionView: collectionView) { (collectionView: UICollectionView, indexPath: IndexPath, item: WeatherViewModel.Item) -> UICollectionViewCell? in
             switch item {
-            case let hourEntry as HourlyEntry:
+            case let .hour(hourEntry):
                 let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "HourlyEntryCell", for: indexPath)
                 (cell as? HourlyEntryCollectionViewCell)?.configure(with: hourEntry)
                 return cell
-            case let dayEntry as DailyEntry:
+            case let .day(dayEntry):
                 let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "DailyEntryCell", for: indexPath)
                 (cell as? DailyEntryCollectionViewCell)?.configure(with: dayEntry)
                 return cell
-            default:
-                let sectionType = WeatherViewModel.Section.allCases[indexPath.section]
-                fatalError("Not covered section and item type combination for item: \(item) with section type: \(sectionType) position: \(indexPath)")
             }
         }
 

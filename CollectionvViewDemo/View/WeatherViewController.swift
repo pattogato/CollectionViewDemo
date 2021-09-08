@@ -7,19 +7,23 @@
 
 import UIKit
 
-
+protocol WeatherView: AnyObject {
+    func configure(with viewModel: WeatherViewModel)
+}
 
 class WeatherViewController: UIViewController {
     @IBOutlet weak var collectionView: UICollectionView!
 
     private lazy var dataSource = WeatherCollectionViewDataSource(collectionView: collectionView)
     private var viewModel: WeatherViewModel?
+    // This is to be injected for clean code via the initialiser
+    private let presenter: WeatherPresenter = WeatherPresenterImpl()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         setupCollectionView()
-        self.configure(with: WeatherViewModel(days: WeatherData.sample))
+        presenter.viewLoaded(view: self)
     }
 
     private func setupCollectionView() {
@@ -33,17 +37,19 @@ class WeatherViewController: UIViewController {
     }
 }
 
-// MARK: - Data handling
-
-extension WeatherViewController {
+extension WeatherViewController: WeatherView {
     func configure(with viewModel: WeatherViewModel) {
         self.viewModel = viewModel
         title = viewModel.title
         reloadData()
     }
+}
 
-    private func makeSnapshot() -> NSDiffableDataSourceSnapshot<WeatherViewModel.Section, AnyHashable> {
-        var snapshot = NSDiffableDataSourceSnapshot<WeatherViewModel.Section, AnyHashable>()
+// MARK: - Data handling
+
+extension WeatherViewController {
+    private func makeSnapshot() -> NSDiffableDataSourceSnapshot<WeatherViewModel.Section, WeatherViewModel.Item> {
+        var snapshot = NSDiffableDataSourceSnapshot<WeatherViewModel.Section, WeatherViewModel.Item>()
 
         viewModel?.sections.sorted(by: { $0.key.order < $1.key.order }).forEach { section, items in
             snapshot.appendSections([section])
@@ -61,14 +67,10 @@ extension WeatherViewController {
 extension WeatherViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         guard
-            let item = dataSource.itemIdentifier(for: indexPath) as? DailyEntry,
-            !item.selected
+            let item = dataSource.itemIdentifier(for: indexPath),
+            case let WeatherViewModel.Item.day(day) = item
         else { return }
 
-        if let previousItem = viewModel?.selectedDailyEntry {
-            viewModel?.deselect(dailyEntry: previousItem)
-        }
-        viewModel?.select(dailyEntry: item)
-        reloadData()
+        presenter.selectDay(day)
     }
 }

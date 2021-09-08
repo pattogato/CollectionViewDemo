@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct HourlyEntry: Hashable {
+struct HourlyEntry {
     let time: String
     let icon: WeatherIcon
     let temperature: String

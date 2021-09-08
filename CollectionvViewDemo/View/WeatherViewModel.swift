@@ -8,7 +8,24 @@
 import Foundation
 
 struct WeatherViewModel {
-    var sections: [Section: [AnyHashable]]
+    struct Day: Hashable {
+        let name: String
+        let icon: WeatherIcon
+        let minTemp: String
+        let maxTemp: String
+        let selected: Bool
+        let id: UUID
+    }
+    struct Hour: Hashable {
+        let time: String
+        let icon: WeatherIcon
+        let temperature: String
+    }
+    enum Item: Hashable {
+        case day(Day)
+        case hour(Hour)
+    }
+    var sections: [Section: [Item]]
     let title: String
 }
 
@@ -41,38 +58,5 @@ extension WeatherViewModel {
                 return "Upcoming days"
             }
         }
-    }
-}
-
-// MARK: - Select/unselect daily entry
-
-extension WeatherViewModel {
-    var selectedDailyEntry: DailyEntry? {
-        (sections[.daily] as? [DailyEntry])?.first(where: { $0.selected })
-    }
-
-    mutating func select(dailyEntry: DailyEntry) {
-        guard let index = (sections[.daily] as? [DailyEntry])?.firstIndex(of: dailyEntry) else {
-            return
-        }
-        var mutableCopy = dailyEntry
-        mutableCopy.selected = true
-        update(dailyEntry: mutableCopy, at: index)
-        sections[.hourly] = dailyEntry.hours
-    }
-
-    mutating func deselect(dailyEntry: DailyEntry) {
-        guard let index = (sections[.daily] as? [DailyEntry])?.firstIndex(of: dailyEntry) else {
-            return
-        }
-        var mutableCopy = dailyEntry
-        mutableCopy.selected = false
-        update(dailyEntry: mutableCopy, at: index)
-    }
-
-    private mutating func update(dailyEntry: DailyEntry, at index: Int) {
-        var dailyEntries = sections[.daily]
-        dailyEntries?.replaceSubrange(index...index, with: [dailyEntry])
-        sections[.daily] = dailyEntries
     }
 }

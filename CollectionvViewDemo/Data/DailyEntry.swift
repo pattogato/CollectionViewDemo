@@ -7,11 +7,11 @@
 
 import Foundation
 
-struct DailyEntry: Hashable {
+struct DailyEntry {
     let name: String
     let icon: WeatherIcon
     let minTemp: String
     let maxTemp: String
     let hours: [HourlyEntry]
-    var selected: Bool
+    let id: UUID
 }

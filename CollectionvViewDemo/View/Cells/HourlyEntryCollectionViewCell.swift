@@ -12,7 +12,7 @@ class HourlyEntryCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var iconLabel: UILabel!
     @IBOutlet weak var tempLabel: UILabel!
 
-    func configure(with viewModel: HourlyEntry) {
+    func configure(with viewModel: WeatherViewModel.Hour) {
         hourLabel.text = viewModel.time
         iconLabel.text = viewModel.icon.rawValue
         tempLabel.text = viewModel.temperature
