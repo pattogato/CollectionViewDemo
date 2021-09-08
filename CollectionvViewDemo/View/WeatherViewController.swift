@@ -11,7 +11,7 @@ protocol WeatherView: AnyObject {
     func configure(with viewModel: WeatherViewModel)
 }
 
-class WeatherViewController: UIViewController {
+final class WeatherViewController: UIViewController {
     @IBOutlet weak var collectionView: UICollectionView!
 
     private lazy var dataSource = WeatherCollectionViewDataSource(collectionView: collectionView)

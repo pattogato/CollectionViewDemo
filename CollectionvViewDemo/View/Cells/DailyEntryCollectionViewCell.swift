@@ -7,12 +7,12 @@
 
 import UIKit
 
-class DailyEntryCollectionViewCell: UICollectionViewCell {
+final class DailyEntryCollectionViewCell: UICollectionViewCell {
     
-    @IBOutlet weak var dayLabel: UILabel!
-    @IBOutlet weak var iconLabel: UILabel!
-    @IBOutlet weak var minTempLabel: UILabel!
-    @IBOutlet weak var maxTempLabel: UILabel!
+    @IBOutlet private var dayLabel: UILabel!
+    @IBOutlet private var iconLabel: UILabel!
+    @IBOutlet private var minTempLabel: UILabel!
+    @IBOutlet private var maxTempLabel: UILabel!
 
     func configure(with viewModel: WeatherViewModel.Day) {
         dayLabel.text = viewModel.name

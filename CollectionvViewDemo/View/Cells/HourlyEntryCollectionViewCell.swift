@@ -7,10 +7,10 @@
 
 import UIKit
 
-class HourlyEntryCollectionViewCell: UICollectionViewCell {
-    @IBOutlet weak var hourLabel: UILabel!
-    @IBOutlet weak var iconLabel: UILabel!
-    @IBOutlet weak var tempLabel: UILabel!
+final class HourlyEntryCollectionViewCell: UICollectionViewCell {
+    @IBOutlet private var hourLabel: UILabel!
+    @IBOutlet private var iconLabel: UILabel!
+    @IBOutlet private var tempLabel: UILabel!
 
     func configure(with viewModel: WeatherViewModel.Hour) {
         hourLabel.text = viewModel.time

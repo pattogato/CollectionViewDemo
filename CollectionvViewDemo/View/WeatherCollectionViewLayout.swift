@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-class WeatherCollectionViewLayout: UICollectionViewCompositionalLayout {
+final class WeatherCollectionViewLayout: UICollectionViewCompositionalLayout {
     private static let sectionProvider = { (sectionIndex: Int, _: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection? in
         let sectionLayoutKind = WeatherViewModel.Section.allCases[sectionIndex]
         switch sectionLayoutKind {
